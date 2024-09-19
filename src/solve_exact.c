@@ -16,16 +16,16 @@ bool	is_valid(t_op *sol, int curr)
 {
 	if (sol[curr] == OP_RB || sol[curr] == OP_RRB|| sol[curr] == OP_RRR|| sol[curr] == OP_RR|| sol[curr] == OP_SB|| sol[curr] == OP_SS)
 		return (false);
-	if (sol[curr] = OP_RA)
-		return (!curr || sol[curr-1] != OP_RRA)
-	if (sol[curr] = OP_RRA)
-		return (!curr || sol[curr-1] != OP_RA)
-	if (sol[curr] = OP_SA)
-		return (!curr || sol[curr-1] != OP_SA)
-	if (sol[curr] = OP_PA)
-		return (!curr || sol[curr-1] != OP_PB)
-	if (sol[curr] = OP_PB)
-		return (!curr || sol[curr-1] != OP_PA)
+	if (sol[curr] == OP_RA)
+		return (!curr || sol[curr-1] != OP_RRA);
+	if (sol[curr] == OP_RRA)
+		return (!curr || sol[curr-1] != OP_RA);
+	if (sol[curr] == OP_SA)
+		return (!curr || sol[curr-1] != OP_SA);
+	if (sol[curr] == OP_PA)
+		return (!curr || sol[curr-1] != OP_PB);
+	if (sol[curr] == OP_PB)
+		return (!curr || sol[curr-1] != OP_PA);
 	return (420);
 }
 

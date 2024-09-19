@@ -57,36 +57,63 @@ void	solve_big_divide(t_stk *a, t_stk *b, t_sol *sol)
 }
 
 #include <math.h>
+bool	insert_bucket_filter(int pos, t_stk *a, t_stk *b)
+{
+	int val;
+	int size;
+
+	val = b->head->val;
+	size = a->len + b->len;
+	return (
+	(b->len > size/3 && val < size/3) || (b->len > size/6 && val < size/6)
+	|| (b->len > 2*size/3 && val < 2*size/3) || (b->len > 1*size/2 && val < 1*size/2) 
+	|| (b->len > 5*size/6 && val < 5*size/6) || (b->len > 3*size/4 && val < 3*size/4) 
+	);
+}
+
+int		insert_find_a_pos(int pos, t_stk *a, t_stk *b)
+{
+	int	pos_a;
+	int	pos_min;
+	int i;
+	int val;
+
+	val = b->head->val;
+	pos_a = -1;
+	i = 0;
+	while(i < a->len)
+	{
+		if (pos_a == -1 && a->head->val > val && a->head->prev->val < val)
+			pos_a = i;
+		if (a->head->val < a->head->prev->val)
+			pos_min = i;
+		ps_op_ra(a,b);
+		i++;
+	}
+	if (pos_a == -1)
+		pos_a = pos_min;
+	if (pos_a > a->len - pos_a)
+		pos_a = pos_a - a->len;
+	return (pos_a);
+}
+
 int		insert_cost(int pos, t_stk *a, t_stk *b)
 {
 	int res;
-	int posA = -1;
-	int posMin;
-	int val = b->head->val;
-	int size = a->len + b->len;
-	if (b->len > size/3 && val < size/3) return (INT_MAX);
-	if (b->len > size/6 && val < size/6) return (INT_MAX);
-	if (b->len > 2*size/3 && val < 2*size/3) return (INT_MAX);
-	if (b->len > 1*size/2 && val < 1*size/2) return (INT_MAX);
-	if (b->len > 5*size/6 && val < 5*size/6) return (INT_MAX);
-	if (b->len > 3*size/4 && val < 3*size/4) return (INT_MAX);
+	int pos_a;
 
-	for (int i = 0; i < a->len; i++)
-	{
-		if (posA == -1 && a->head->val > val && a->head->prev->val < val)
-			posA = i;
-		if (a->head->val < a->head->prev->val)
-			posMin = i;
-		ps_op_ra(a,b);
-	}
-	if (posA == -1) posA = posMin;
-	if (pos > b->len - pos) pos = pos - b->len;
-	if (posA > a->len - posA) posA = posA - a->len;
-
-	if (pos >= 0 && posA >= 0) return fmax(pos,posA);
-	if (pos <= 0 && posA <= 0) return fmax(-pos,-posA);
-	if (pos > 0 && posA < 0) return fmin(pos-posA, fmin(fmax(pos, a->len + posA), fmax(b->len-pos, -posA)));
-	return fmin(posA-pos, fmin(fmax(posA, b->len + pos), fmax(a->len-posA, -pos)));
+	if (insert_bucket_filter(pos, a, b))
+		return (INT_MAX);
+	pos_a = insert_find_a_pos(pos, a, b);
+	if (pos > b->len - pos)
+		pos = pos - b->len;
+	if (pos >= 0 && pos_a >= 0)
+		return fmax(pos, pos_a);
+	if (pos <= 0 && pos_a <= 0)
+		return fmax(-pos, -pos_a);
+	if (pos > 0 && pos_a < 0)
+		return fmin(pos - pos_a, fmin(fmax(pos, a->len + pos_a), fmax(b->len-pos, -pos_a)));
+	return fmin(pos_a - pos, fmin(fmax(pos_a, b->len + pos), fmax(a->len - pos_a, -pos)));
 }
 
 void	fast_insert(int pos, t_stk *a, t_stk *b, t_sol *sol)
@@ -164,6 +191,11 @@ void	fast_insert(int pos, t_stk *a, t_stk *b, t_sol *sol)
 
 void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol)
 {
+	int	i;
+	int	pos;
+	int cost;
+	int best;
+
 	while (a->len < 2)
 	{
 		ps_op_pa(a,b);
@@ -171,20 +203,20 @@ void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol)
 	}
 	while (b->len)
 	{
-		int	pos;
-		int best = INT_MAX;
-		int best_val = b->head->val;
-		for (int i = 0; i < b->len; i++)
+		i = 0;
+		best = INT_MAX;
+		while(i < b->len)
 		{
-			int cost = insert_cost(i, a, b);
-			if (b->head->val >= b->len - 1) cost -= 5*(b->head->val - b->len + 1)/8;
-			if (cost < best || (cost==best && b->head->val > best_val))
+			cost = insert_cost(i, a, b);
+			if (b->head->val >= b->len - 1) 
+				cost -= 5*(b->head->val - b->len + 1)/8;
+			if (cost < best)
 			{
 				pos = i;
 				best = cost;
-				best_val = b->head->val;
 			}
 			ps_op_rb(a,b);
+			i++;
 		}
 		fast_insert(pos, a, b, sol);
 	}
