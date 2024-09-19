@@ -1,4 +1,4 @@
-CC := cc -g
+CC := cc -g -Wall -Wextra 
 CFLAGS := 
 
 NAME := push_swap
