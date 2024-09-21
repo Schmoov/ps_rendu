@@ -1,26 +1,6 @@
 #include "push_swap.h"
 
-static int	cmp(const void *a, const void *b)
-{
-	if (*(int *)a > *(int *)b)
-		return (1);
-	if (*(int *)a < *(int *)b)
-		return (-1);
-	return (0);
-}
-
-static bool	is_int(long long n)
-{
-	return (n <= INT_MAX && n >= INT_MIN);
-}
-
-static bool	ft_isspace(int c)
-{
-	return (c == ' ' || c == '\f' || c == '\n'
-		|| c == '\r' || c == '\t' || c == '\v');
-}
-
-static int	ps_atoi(char *nptr, bool *err)
+static bool	ps_atoi(char *nptr, int *n)
 {
 	long long	res;
 	int			i;
@@ -35,15 +15,15 @@ static int	ps_atoi(char *nptr, bool *err)
 			sign = -1;
 		i++;
 	}
-	while (ft_isdigit(nptr[i]) && is_int(sign * res))
+	while (ft_isdigit(nptr[i])
+		&& sign * res <= INT_MAX && sign * res >= INT_MIN)
 	{
 		res = 10 * res + nptr[i] - '0';
 		i++;
 	}
 	res *= sign;
-	if (nptr[i] || !is_int(res))
-		*err = true;
-	return (res);
+	*n = res;
+	return (!nptr[i] && res <= INT_MAX && res >= INT_MIN);
 }
 
 bool	ps_parse(int *res, char **nums, int size)
@@ -55,26 +35,36 @@ bool	ps_parse(int *res, char **nums, int size)
 	err = false;
 	while (i < size)
 	{
-		res[i] = ps_atoi(nums[i], &err);
+		if (!ps_atoi(nums[i], res + i))
+			return (false);
 		i++;
 	}
-	return (!err);
+	return (true);
 }
 
 bool	compress(int *res, int size)
 {
 	int	*dup;
+	int	i;
 
+	i = 0;
 	dup = (int *)malloc(size * sizeof(int));
 	if (!dup)
 		return (false);
 	ft_memcpy(dup, res, size * sizeof(int));
-	qsort(dup, size, sizeof(int), cmp);
-	for (int i = 0; i < size - 1; i++)
+	ft_isort(dup, size);
+	while (i < size - 1)
+	{
 		if (dup[i] == dup[i + 1])
 			return (free(dup), false);
-	for (int i = 0; i < size; i++)
-		res[i] = ((int *)bsearch(res + i, dup, size, sizeof(int), cmp) - dup);
+		i++;
+	}
+	i = 0;
+	while (i < size)
+	{
+		res[i] = (ft_ibsearch(res[i], dup, size) - dup);
+		i++;
+	}
 	free(dup);
 	return (true);
 }
@@ -108,8 +98,4 @@ t_node	*parsed_to_nodes(int *parsed, int size)
 		i++;
 	}
 	return (res);
-}
-
-void	nodes_reset(t_node *nodes, int size)
-{
 }

@@ -1,6 +1,6 @@
 #include "../push_swap.h"
 
-static bool	insert_bucket_filter(int pos, t_stk *a, t_stk *b)
+static bool	insert_bucket_filter(t_stk *a, t_stk *b)
 {
 	int	val;
 	int	size;
@@ -19,9 +19,9 @@ int	insert_cost(int pos, t_stk *a, t_stk *b)
 {
 	int	pos_a;
 
-	if (insert_bucket_filter(pos, a, b))
+	if (insert_bucket_filter(a, b))
 		return (INT_MAX);
-	pos_a = insert_find_pos_a(pos, a, b);
+	pos_a = insert_find_pos_a(a, b);
 	return (insert_optimize_rots(&pos, &pos_a, a, b));
 }
 
@@ -70,21 +70,18 @@ void	solve_big_last_rot(t_stk *a, t_stk *b, t_sol *sol)
 	}
 }
 
-t_sol	solve_big(t_node *parsed, int size)
+void	solve_big(t_node *parsed, int size, t_sol *sol)
 {
-	t_stk	stk_a;
-	t_stk	stk_b;
-	t_sol	sol;
+	t_stk	a;
+	t_stk	b;
 
-	sol_init(&sol);
-	stks_init(parsed, size, &stk_a, &stk_b);
-	solve_big_divide(&stk_a, &stk_b, &sol);
-	while (a->len < 2)
+	stks_init(parsed, size, &a, &b);
+	solve_big_divide(&a, &b, sol);
+	while (a.len < 2)
 	{
-		ps_op_pa(a, b);
+		ps_op_pa(&a, &b);
 		sol_append_one(sol, OP_PA);
 	}
-	solve_big_merge(&stk_a, &stk_b, &sol);
-	solve_big_last_rot(&stk_a, &stk_b, &sol);
-	return (sol);
+	solve_big_merge(&a, &b, sol);
+	solve_big_last_rot(&a, &b, sol);
 }

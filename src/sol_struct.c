@@ -8,7 +8,7 @@ void	sol_init(t_sol *sol)
 	sol->len = 0;
 }
 
-void	sol_realloc(t_sol *sol)
+static void	sol_realloc(t_sol *sol)
 {
 	t_op	*new_val;
 
@@ -27,18 +27,11 @@ void	sol_append_one(t_sol *sol, t_op op)
 	(sol->len)++;
 }
 
-void	sol_print(t_sol	sol)
+void	sol_append_arr(t_sol *sol, t_op *op, int size)
 {
 	int	i;
 
 	i = 0;
-	while (i < sol.len)
-	{
-		ft_printf("%s\n", ps_op_to_str(sol.val[i]));
-		i++;
-	}
-}
-void	sol_destroy(t_sol sol)
-{
-	free(sol.val);
+	while (i < size)
+		sol_append_one(sol, op[i++]);
 }

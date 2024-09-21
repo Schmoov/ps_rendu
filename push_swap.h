@@ -49,12 +49,12 @@ t_op	ps_str_to_op(char *move);
 bool	ps_parse(int *res, char **nums, int size);
 bool	compress(int *res, int size);
 int		*parse_and_compress(char **nums, int size);
+t_node	*parsed_to_nodes(int *parsed, int size);
 
 void	stks_init(t_node *input, int input_len, t_stk *stk_a, t_stk *stk_b);
 void	stks_execute(t_op *moves, int moves_len, t_stk *stk_a, t_stk *stk_b);
 bool	stks_is_solved(t_stk *stk_a, t_stk *stk_b);
 void	stks_destroy(t_stk *stk_a, t_stk *stk_b);
-void	stks_print(t_stk *a, t_stk *b);
 
 
 void	ps_op_pa(t_stk *a, t_stk *b);
@@ -68,16 +68,26 @@ void	ps_op_rr(t_stk *a, t_stk *b);
 void	ps_op_rra(t_stk *a, t_stk *b);
 void	ps_op_rrb(t_stk *a, t_stk *b);
 void	ps_op_rrr(t_stk *a, t_stk *b);
+
 bool	is_solution(t_node *nodes, int input_len, t_op *moves, int moves_len);
-void    solve_brute_force(t_node *nodes, int size); 
-void	solve_backtrack(t_node *nodes, int size);
-#endif
-t_node	*parsed_to_nodes(int *parsed, int size);
-void	nodes_reset(t_node *nodes, int size);
-bool	is_sorted(t_node *nodes, int size);
+bool	is_valid(t_op *sol, int curr);
+bool	solve_iddfs_rec(t_node *nodes, int size, t_op *sol, int step);
+void	solve_backtrack(t_node *nodes, int size, t_sol *sol);
+
+
 void	sol_init(t_sol *sol);
-void	sol_realloc(t_sol *sol);
 void	sol_append_one(t_sol *sol, t_op op);
+void	sol_append_arr(t_sol *sol, t_op *op, int size);
 void	sol_print(t_sol	sol);
 void	sol_destroy(t_sol sol);
-t_sol	solve_big(t_node *parsed, int size);
+
+int	insert_cost(int pos, t_stk *a, t_stk *b);
+void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol);
+void	solve_big_last_rot(t_stk *a, t_stk *b, t_sol *sol);
+void	solve_big(t_node *parsed, int size, t_sol *sol);
+void	solve_big_divide(t_stk *a, t_stk *b, t_sol *sol);
+int	insert_find_pos_a(t_stk *a, t_stk *b);
+int	insert_optimize_rots(int *pos, int *pos_a, t_stk *a, t_stk *b);
+void	fast_insert(int pos, t_stk *a, t_stk *b, t_sol *sol);
+bool	is_sorted(t_node *nodes, int size);
+#endif

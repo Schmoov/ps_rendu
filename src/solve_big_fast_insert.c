@@ -1,6 +1,6 @@
 #include "../push_swap.h"
 
-int	insert_find_pos_a(int pos, t_stk *a, t_stk *b)
+int	insert_find_pos_a(t_stk *a, t_stk *b)
 {
 	int	pos_a;
 	int	pos_min;
@@ -103,7 +103,7 @@ void	fast_insert(int pos, t_stk *a, t_stk *b, t_sol *sol)
 		ps_op_rb(a, b);
 		i++;
 	}
-	pos_a = insert_find_pos_a(pos, a, b);
+	pos_a = insert_find_pos_a(a, b);
 	i = 0;
 	while (i < pos_a)
 	{

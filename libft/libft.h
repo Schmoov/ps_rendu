@@ -6,7 +6,7 @@
 /*   By: parden <parden@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 12:42:49 by parden            #+#    #+#             */
-/*   Updated: 2024/05/31 13:40:52 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/21 22:20:57 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdarg.h>
-
 
 # define SPECIFIERS "cspdiuxX%"
 # define FLAGS "0-+ #"
@@ -74,6 +73,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_atoi(const char *nptr);
 char	*ft_itoa(int n);
 void	*ft_calloc(size_t nelem, size_t elsize);
+void	ft_free_split(char **split);
 
 //			STDIO
 void	ft_putchar_fd(char c, int fd);
@@ -81,6 +81,15 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 char	*get_next_line(int fd);
+
+//			INTS
+int		ft_imax(int a, int b);
+int		ft_imin(int a, int b);
+int		ft_imean(int a, int b);
+int		ft_iabs(int a);
+void	ft_iswap(int *a, int *b);
+void	ft_isort(int *arr, int size);
+int		*ft_ibsearch(int key, int *arr, int size);
 
 //			PRINTF
 //pad can be \0 (right-justify), '-' (left-justify), or '0' (pad with zero)
