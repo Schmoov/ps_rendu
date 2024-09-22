@@ -26,13 +26,11 @@ static bool	ps_atoi(char *nptr, int *n)
 	return (!nptr[i] && res <= INT_MAX && res >= INT_MIN);
 }
 
-bool	ps_parse(int *res, char **nums, int size)
+static bool	ps_parse(int *res, char **nums, int size)
 {
 	int		i;
-	bool	err;
 
 	i = 0;
-	err = false;
 	while (i < size)
 	{
 		if (!ps_atoi(nums[i], res + i))
@@ -42,7 +40,7 @@ bool	ps_parse(int *res, char **nums, int size)
 	return (true);
 }
 
-bool	compress(int *res, int size)
+static bool	compress(int *res, int size)
 {
 	int	*dup;
 	int	i;
@@ -69,7 +67,7 @@ bool	compress(int *res, int size)
 	return (true);
 }
 
-int	*parse_and_compress(char **nums, int size)
+static int	*parse_and_compress(char **nums, int size)
 {
 	int	*res;
 
@@ -83,14 +81,16 @@ int	*parse_and_compress(char **nums, int size)
 	return (res);
 }
 
-t_node	*parsed_to_nodes(int *parsed, int size)
+t_node	*parse_nodes(char **nums, int size)
 {
+	int		*parsed;
 	t_node	*res;
 	int		i;
 
+	parsed = parse_and_compress(nums, size);
 	res = malloc(size * sizeof(t_node));
 	if (!res || !parsed)
-		return (NULL);
+		return (free(res), free(parsed), NULL);
 	i = 0;
 	while (i < size)
 	{
@@ -99,5 +99,6 @@ t_node	*parsed_to_nodes(int *parsed, int size)
 		res[i].prev = res + ((i - 1 + size) % size);
 		i++;
 	}
+	free(parsed);
 	return (res);
 }

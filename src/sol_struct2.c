@@ -4,6 +4,8 @@ void	sol_print(t_sol	sol)
 {
 	int	i;
 
+	if (sol.size == -1)
+		return ((void)write(2, "Error\n", 6));
 	i = 0;
 	while (i < sol.len)
 	{

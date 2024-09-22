@@ -46,10 +46,7 @@ t_ps_op_handler	ps_op_to_func(t_op move);
 char	*ps_op_to_str(t_op move);
 t_op	ps_str_to_op(char *move);
 
-bool	ps_parse(int *res, char **nums, int size);
-bool	compress(int *res, int size);
-int		*parse_and_compress(char **nums, int size);
-t_node	*parsed_to_nodes(int *parsed, int size);
+t_node	*parse_nodes(char **nums, int size);
 
 void	stks_init(t_node *input, int input_len, t_stk *stk_a, t_stk *stk_b);
 void	stks_execute(t_op *moves, int moves_len, t_stk *stk_a, t_stk *stk_b);
