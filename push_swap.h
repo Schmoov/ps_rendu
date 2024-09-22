@@ -6,7 +6,7 @@
 /*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 21:11:58 by parden            #+#    #+#             */
-/*   Updated: 2024/09/22 21:22:20 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/22 21:58:25 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ bool	solve_iddfs_rec(t_node *nodes, int size, t_op *sol, int step);
 void	solve_backtrack(t_node *nodes, int size, t_sol *sol);
 
 //		SOLVERS
-int		insert_cost(int pos, t_stk *a, t_stk *b);
 void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol);
 void	solve_big_last_rot(t_stk *a, t_stk *b, t_sol *sol);
 void	solve_big(t_node *parsed, int size, t_sol *sol);

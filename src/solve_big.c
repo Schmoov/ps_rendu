@@ -6,7 +6,7 @@
 /*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:57:07 by parden            #+#    #+#             */
-/*   Updated: 2024/09/22 20:57:39 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/22 22:00:25 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@ static bool	insert_bucket_filter(t_stk *a, t_stk *b)
 		|| (b->len > 3 * size / 4 && val < 3 * size / 4));
 }
 
-int	insert_cost(int pos, t_stk *a, t_stk *b)
+static int	insert_cost(int pos, t_stk *a, t_stk *b)
 {
 	int	pos_a;
+	int	res;
 
 	if (insert_bucket_filter(a, b))
 		return (INT_MAX);
 	pos_a = insert_find_pos_a(a, b);
-	return (insert_optimize_rots(&pos, &pos_a, a, b));
+	res = insert_optimize_rots(&pos, &pos_a, a, b);
+	if (b->head->val >= b->len - 1)
+		res -= 5 * (b->head->val - b->len + 1) / 8;
+	return (res);
 }
 
 void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol)
@@ -43,20 +47,21 @@ void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol)
 	int	pos;
 	int	cost;
 	int	best;
+	int	best_val;
 
 	while (b->len)
 	{
 		i = 0;
 		best = INT_MAX;
+		best_val = 0;
 		while (i < b->len)
 		{
 			cost = insert_cost(i, a, b);
-			if (b->head->val >= b->len - 1)
-				cost -= 5 * (b->head->val - b->len + 1) / 8;
-			if (cost < best)
+			if (cost < best || (cost == best && b->head->val > best_val))
 			{
 				pos = i;
 				best = cost;
+				best_val = b->head->val;
 			}
 			ps_op_rb(a, b);
 			i++;
