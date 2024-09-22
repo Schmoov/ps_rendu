@@ -6,27 +6,29 @@
 /*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 22:09:22 by parden            #+#    #+#             */
-/*   Updated: 2024/09/21 22:17:01 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/22 16:01:44 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../libft.h"
 
 int	*ft_ibsearch(int key, int *arr, int size)
 {
 	int	lo;
 	int	hi;
+	int	mid;
 
 	lo = 0;
-	hi = size - 1;
-	while (lo < hi)
+	hi = size;
+	while (hi - lo > 1)
 	{
-		if (arr[(lo + hi) / 2] < key)
-			lo = (lo + hi) / 2 + 1;
-		else if (arr[(lo + hi) / 2] > key)
-			hi = (lo + hi) / 2 - 1;
+		mid = lo + (hi - lo) / 2;
+		if (arr[mid] > key)
+			hi = mid;
 		else
-			return (arr + (lo + hi) / 2);
+			lo = mid;
 	}
-	return (NULL);
+	if (arr[lo] != key)
+		return (NULL);
+	return (arr + lo);
 }

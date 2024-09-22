@@ -89,6 +89,8 @@ t_node	*parsed_to_nodes(int *parsed, int size)
 	int		i;
 
 	res = malloc(size * sizeof(t_node));
+	if (!res || !parsed)
+		return (NULL);
 	i = 0;
 	while (i < size)
 	{

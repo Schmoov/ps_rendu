@@ -8,6 +8,8 @@ int	main(int argc, char **argv)
 
 	input = parse_and_compress(argv + 1, argc - 1);
 	nodes = parsed_to_nodes(input, argc - 1);
+	if (!nodes)
+		return 0;
 	sol_init(&sol);
 	if (argc - 1 <= 5)
 		solve_backtrack(nodes, argc - 1, &sol);

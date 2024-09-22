@@ -30,7 +30,7 @@ bool	is_solution(t_node *nodes, int input_len, t_op *moves, int moves_len)
 bool	is_valid(t_op *sol, int curr)
 {
 	if (sol[curr] == OP_RB || sol[curr] == OP_RRB || sol[curr] == OP_RRR
-		|| sol[curr] == OP_RR || sol[curr] == OP_SB || sol[curr] == OP_SS)
+		|| sol[curr] == OP_RR || sol[curr] == OP_SB)
 		return (false);
 	if (sol[curr] == OP_RA)
 		return (!curr || sol[curr - 1] != OP_RRA);
@@ -42,6 +42,8 @@ bool	is_valid(t_op *sol, int curr)
 		return (!curr || sol[curr - 1] != OP_PB);
 	if (sol[curr] == OP_PB)
 		return (!curr || sol[curr - 1] != OP_PA);
+	if (sol[curr] == OP_SS)
+		return (curr && sol[curr - 1] != OP_SS);
 	return (420);
 }
 
