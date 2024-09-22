@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/22 21:11:58 by parden            #+#    #+#             */
+/*   Updated: 2024/09/22 21:22:20 by parden           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 # include "libft/libft.h"
 
-		//DATA_STRUCTURE
 typedef struct s_node {
 	int				val;
 	struct s_node	*prev;
@@ -13,11 +24,6 @@ typedef struct s_stk {
 	int		len;
 	t_node	*head;
 }			t_stk;
-
-t_node	*node_create(int val);
-void	stk_push_node(t_stk *stk, t_node *node);
-t_node	*stk_pop_node(t_stk *stk);
-void	stk_free_nodes(t_stk *stk);
 
 typedef enum e_op {
 	OP_SA,
@@ -34,26 +40,38 @@ typedef enum e_op {
 	NB_OP
 }	t_op;
 
-typedef struct	s_sol {
+typedef struct s_sol {
 	t_op		*val;
 	int			len;
 	int			size;
 }				t_sol;
 
-typedef void	(*t_ps_op_handler)(t_stk *stk_a, t_stk *stk_b);
-t_ps_op_handler	ps_op_to_func(t_op move);
-//void	(*ps_op_to_func(t_op move))(t_stk *stk_a, t_stk *stk_b);
-char	*ps_op_to_str(t_op move);
-t_op	ps_str_to_op(char *move);
-
 t_node	*parse_nodes(char **nums, int size);
+
+//		DATA STRUCTURES
+t_node	*node_create(int val);
+void	stk_push_node(t_stk *stk, t_node *node);
+t_node	*stk_pop_node(t_stk *stk);
+void	stk_free_nodes(t_stk *stk);
 
 void	stks_init(t_node *input, int input_len, t_stk *stk_a, t_stk *stk_b);
 void	stks_execute(t_op *moves, int moves_len, t_stk *stk_a, t_stk *stk_b);
 bool	stks_is_solved(t_stk *stk_a, t_stk *stk_b);
 void	stks_destroy(t_stk *stk_a, t_stk *stk_b);
 
+void	sol_init(t_sol *sol);
+void	sol_append_one(t_sol *sol, t_op op);
+void	sol_append_arr(t_sol *sol, t_op *op, int size);
+void	sol_print(t_sol	sol);
+void	sol_destroy(t_sol sol);
 
+//		HANDLER
+//t_ps_op_handler	ps_op_to_func(t_op move);
+//Norminette is too dumb for higher order func
+typedef void	(*t_ps_op_handler)(t_stk *stk_a, t_stk *stk_b);
+void	(*ps_op_to_func(t_op move))(t_stk *stk_a, t_stk *stk_b);
+char	*ps_op_to_str(t_op move);
+t_op	ps_str_to_op(char *move);
 void	ps_op_pa(t_stk *a, t_stk *b);
 void	ps_op_pb(t_stk *a, t_stk *b);
 void	ps_op_sa(t_stk *a, t_stk *b);
@@ -71,20 +89,14 @@ bool	is_valid(t_op *sol, int curr);
 bool	solve_iddfs_rec(t_node *nodes, int size, t_op *sol, int step);
 void	solve_backtrack(t_node *nodes, int size, t_sol *sol);
 
-
-void	sol_init(t_sol *sol);
-void	sol_append_one(t_sol *sol, t_op op);
-void	sol_append_arr(t_sol *sol, t_op *op, int size);
-void	sol_print(t_sol	sol);
-void	sol_destroy(t_sol sol);
-
-int	insert_cost(int pos, t_stk *a, t_stk *b);
+//		SOLVERS
+int		insert_cost(int pos, t_stk *a, t_stk *b);
 void	solve_big_merge(t_stk *a, t_stk *b, t_sol *sol);
 void	solve_big_last_rot(t_stk *a, t_stk *b, t_sol *sol);
 void	solve_big(t_node *parsed, int size, t_sol *sol);
 void	solve_big_divide(t_stk *a, t_stk *b, t_sol *sol);
-int	insert_find_pos_a(t_stk *a, t_stk *b);
-int	insert_optimize_rots(int *pos, int *pos_a, t_stk *a, t_stk *b);
+int		insert_find_pos_a(t_stk *a, t_stk *b);
+int		insert_optimize_rots(int *pos, int *pos_a, t_stk *a, t_stk *b);
 void	fast_insert(int pos, t_stk *a, t_stk *b, t_sol *sol);
 bool	is_sorted(t_node *nodes, int size);
 #endif

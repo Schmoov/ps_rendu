@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   solve_big_fast_insert.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/22 20:57:07 by parden            #+#    #+#             */
+/*   Updated: 2024/09/22 21:09:40 by parden           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../push_swap.h"
 
 int	insert_find_pos_a(t_stk *a, t_stk *b)
@@ -24,7 +36,6 @@ int	insert_find_pos_a(t_stk *a, t_stk *b)
 	return (pos_a);
 }
 
-#include <math.h>
 int	insert_optimize_rots(int *pos, int *pos_a, t_stk *a, t_stk *b)
 {
 	int	no_rev;
@@ -32,10 +43,10 @@ int	insert_optimize_rots(int *pos, int *pos_a, t_stk *a, t_stk *b)
 	int	rev_a;
 	int	rev_both;
 
-	no_rev = fmax(*pos, *pos_a);
+	no_rev = ft_imax(*pos, *pos_a);
 	rev_b = *pos_a + b->len - *pos;
 	rev_a = *pos + a->len - *pos_a;
-	rev_both = fmax(b->len - *pos, a->len - *pos_a);
+	rev_both = ft_imax(b->len - *pos, a->len - *pos_a);
 	if (no_rev <= rev_b && no_rev <= rev_a && no_rev <= rev_both)
 		return (no_rev);
 	if (rev_b <= rev_a && rev_b <= rev_both)
