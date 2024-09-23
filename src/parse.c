@@ -6,7 +6,7 @@
 /*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:57:07 by parden            #+#    #+#             */
-/*   Updated: 2024/09/22 21:09:04 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/23 15:12:33 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	ps_parse(int *res, char **nums, int size)
 	i = 0;
 	while (i < size)
 	{
-		if (!ps_atoi(nums[i], res + i))
+		if (!nums[i][0] || !ps_atoi(nums[i], res + i))
 			return (false);
 		i++;
 	}

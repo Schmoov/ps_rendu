@@ -6,7 +6,7 @@
 /*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:57:07 by parden            #+#    #+#             */
-/*   Updated: 2024/09/22 20:57:31 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/23 14:43:42 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_ps_op_handler	ps_op_to_func(t_op move)
 {
-	static t_ps_op_handler	arr[11] = {
+	static t_ps_op_handler	arr[NB_OP] = {
 		ps_op_sa,
 		ps_op_ra,
 		ps_op_rra,
@@ -32,7 +32,7 @@ t_ps_op_handler	ps_op_to_func(t_op move)
 
 char	*ps_op_to_str(t_op move)
 {
-	static char	*arr[11] = {
+	static char	*arr[NB_OP] = {
 		"sa",
 		"ra",
 		"rra",
@@ -51,7 +51,7 @@ char	*ps_op_to_str(t_op move)
 t_op	ps_str_to_op(char *move)
 {
 	int			i;
-	static char	*arr[11] = {
+	static char	*arr[NB_OP] = {
 		"sa",
 		"ra",
 		"rra",
@@ -65,7 +65,7 @@ t_op	ps_str_to_op(char *move)
 		"rrb"};
 
 	i = 0;
-	while (ft_strncmp(move, arr[i], 3))
+	while (i < NB_OP && ft_strncmp(move, arr[i], 3))
 		i++;
 	return (i);
 }
