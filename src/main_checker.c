@@ -6,7 +6,7 @@
 /*   By: parden <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:57:07 by parden            #+#    #+#             */
-/*   Updated: 2024/09/23 15:05:38 by parden           ###   ########.fr       */
+/*   Updated: 2024/09/23 15:15:58 by parden           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	parse_moves(t_sol *moves)
 {
-	char *line;
+	char	*line;
 
 	line = get_next_line(0);
 	while (line)

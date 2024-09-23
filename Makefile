@@ -5,10 +5,9 @@ NAME := push_swap
 LIBFT := libft/libft.a
 
 SRC_DIR := src/
-SRC := $(filter-out $(wildcard $(SRC_DIR)main*.c), $(wildcard $(SRC_DIR)*.c))
-
+SRC := handler.c parse.c ps_op1.c ps_op2.c ps_op3.c rotating_deque.c sol_struct2.c sol_struct.c solve_big.c solve_big_divide.c solve_big_fast_insert.c solve_exact.c stks.c
 OBJ_DIR := .obj/
-OBJ := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
+OBJ := $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 
 all: $(NAME)
 

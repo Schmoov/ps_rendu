@@ -4,27 +4,12 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror 
 
 SRC_DIR := src/
-SRC := $(wildcard $(SRC_DIR)**/*.c)
-
-TEST_SRC_DIR := test/src/
-TEST_SRC := $(wildcard $(TEST_SRC_DIR)*.c)
-
+SRC :=ft_ctype/ft_isalnum.c ft_ctype/ft_isalpha.c ft_ctype/ft_isascii.c ft_ctype/ft_isdigit.c ft_ctype/ft_isprint.c ft_ctype/ft_tolower.c ft_ctype/ft_toupper.c ft_ints/ft_ibsearch.c ft_ints/ft_imath.c ft_ints/ft_isort.c ft_ints/ft_iswap.c ft_lst/ft_lstadd_back.c ft_lst/ft_lstadd_front.c ft_lst/ft_lstclear.c ft_lst/ft_lstdelone.c ft_lst/ft_lstiter.c ft_lst/ft_lstlast.c ft_lst/ft_lstmap.c ft_lst/ft_lstnew.c ft_lst/ft_lstsize.c ft_printf/ft_printf.c ft_printf/ft_printf_utils.c ft_printf/int_printers.c ft_printf/itoa_base.c ft_printf/parser.c ft_printf/printer_utils1.c ft_printf/printer_utils2.c ft_printf/ptr_printers.c ft_printf/tokenizer.c ft_stdio/ft_putchar_fd.c ft_stdio/ft_putendl_fd.c ft_stdio/ft_putnbr_fd.c ft_stdio/ft_putstr_fd.c ft_stdio/get_next_line.c ft_stdlib/ft_atoi.c ft_stdlib/ft_calloc.c ft_stdlib/ft_free_split.c ft_stdlib/ft_itoa.c ft_string/ft_bzero.c ft_string/ft_memchr.c ft_string/ft_memcmp.c ft_string/ft_memcpy.c ft_string/ft_memmove.c ft_string/ft_memset.c ft_string/ft_split.c ft_string/ft_strchr.c ft_string/ft_strdup.c ft_string/ft_striteri.c ft_string/ft_strjoin.c ft_string/ft_strlcat.c ft_string/ft_strlcpy.c ft_string/ft_strlen.c ft_string/ft_strmapi.c ft_string/ft_strncmp.c ft_string/ft_strnstr.c ft_string/ft_strrchr.c ft_string/ft_strtrim.c ft_string/ft_substr.c
 OBJ_DIR := .obj/
-OBJ := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
-TEST_OBJ := $(patsubst $(TEST_SRC_DIR)%.c, $(OBJ_DIR)%.o, $(TEST_SRC))
-
-TEST_BIN_DIR := test/bin/
-TEST_BIN := $(patsubst $(OBJ_DIR)%.o, $(TEST_BIN_DIR)%, $(TEST_OBJ))
-
-CRIT := -lcriterion
-ASAN := -fsanitize=address
-LOG_DIR := .logs/
-ASAN_ENV := ASAN_OPTIONS=log_path=$(LOG_DIR):abort_on_error=1:allocator_may_return_null=1
+OBJ := $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 ###############################################################################
 
 all: $(NAME)
-
-test: $(NAME) $(TEST_OBJ) $(TEST_BIN)
 
 $(NAME): $(OBJ)
 	ar rcs $@ $?
@@ -34,41 +19,12 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@ mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)%.test.o: $(TEST_SRC_DIR)%.test.c
-	@ mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR)%.memtest.o: $(TEST_SRC_DIR)%.memtest.c
-	@ mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(ASAN) -c $< -o $@
-
-$(TEST_BIN_DIR)%.test: $(OBJ_DIR)%.test.o
-	@ mkdir -p $(TEST_BIN_DIR)
-	@ mkdir -p $(LOG_DIR)
-	$(CC) $(CFLAGS) $< libft.a $(CRIT) -lbsd -o $@
-	 ./$@
-
-$(TEST_BIN_DIR)%.memtest: $(OBJ_DIR)%.memtest.o
-	@ mkdir -p $(TEST_BIN_DIR)
-	@ mkdir -p $(LOG_DIR)
-	$(CC) $(CFLAGS) $(ASAN) $< libft.a $(CRIT) -lbsd -o $@
-	$(ASAN_ENV) ./$@
-
 clean:
 	rm -rf $(OBJ_DIR)
 
-tclean:
-	rm -f $(TEST_OBJ)
-	rm -rf $(LOG_DIR)
-	rm -rf $(TEST_BIN_DIR)
-
-fclean: clean tclean
+fclean: clean
 	rm -f $(NAME)
 
-re: fclean tclean all
+re: fclean all
 
-tre: tclean test
-
-print-%  : ; @echo $* = $($*)
-
-.PHONY: all test clean tclean fclean re tre
+.PHONY: all clean fclean re
